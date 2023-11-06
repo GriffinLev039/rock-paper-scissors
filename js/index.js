@@ -1,5 +1,37 @@
+const winner = document.querySelector('.winner');
+const results = document.querySelector('.results');
+const btn = document.querySelectorAll('.btn');
+const playerOutput = document.getElementById('players');
+const cpuOutput = document.getElementById('cpu');
+
+
+let playerScore = 0;
+let cpuScore = 0;
+let gameOver = 0;
+
+cpuOutput.textContent = cpuScore;
+playerOutput.textContent = playerScore;
+
+
+btn.forEach((button) => {
+    button.addEventListener('click', () => {
+        console.log(button.id);
+        playRound(button.id);
+    });
+});
+
+
+
 function computerLogic () {
     let randomint = Math.floor(Math.random() * 3);
+    if (gameOver == 1) {
+        cpuScore = 0;
+        playerScore = 0;
+        winner.textContent = '';
+        cpuOutput.textContent = cpuScore;
+        playerOutput.textContent = playerScore;
+        gameOver = 0;
+    }
     if (randomint == 0) {
         return 'SCISSORS';
     }
@@ -39,15 +71,26 @@ function game(playerSelection) {
     }
 }
 
-function playRound() {
-    let playerSelection = prompt('Make your move. Rock, Paper, or Scissors?');
-    playerSelection = playerSelection.toUpperCase();
-    console.log(game(playerSelection));
-}
+function playRound(choice) {
+    playerSelection = choice.toUpperCase();
+    let x = game(playerSelection);
+    results.textContent = x;
+    if (results.textContent === 'Win') {
+        playerScore += 1;
+        playerOutput.textContent = playerScore;
+        if (playerScore == 5) {
+            winner.textContent = 'YOU WIN!';
+            gameOver = 1;
+        }
+    } else if (results.textContent == 'Loss') {
+        cpuScore += 1;
+        cpuOutput.textContent = cpuScore;
+        if (cpuScore == 5) {
+            winner.textContent = 'YOU LOSE...';
+            gameOver = 1;
+        }
+    }
 
-playRound();
-playRound();
-playRound();
-playRound();
-playRound();
+
+}
 
